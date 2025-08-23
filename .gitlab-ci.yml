@@ -1,0 +1,28 @@
+variables:
+  BASE_IMAGES: $CI_REGISTRY/www/images/laravel
+
+image: $CI_PHP_IMAGE
+
+stages:
+  - install
+  - prepare
+  - test
+
+include:
+  - project: www/pipelines
+    ref: v5
+    file:
+      - overlays/alpine-3.20.gitlab-ci.yml
+      - modules/test/phpunit.gitlab-ci.yml
+      - modules/install/php.gitlab-ci.yml
+      - modules/lint/phpcs.gitlab-ci.yml
+      - modules/lint/phpstan.gitlab-ci.yml
+      - modules/lint/pint.gitlab-ci.yml
+
+test:phpunit:
+  before_script:
+    - |
+      apk add php${PHP_VERSION}-pecl-xdebug $PHP_EXTRADEPS
+    - |
+      sed -i 's/;zend_extension=xdebug.so/zend_extension=xdebug.so/;s/;xdebug.mode=off/xdebug.mode=coverage/' \
+      /etc/php${PHP_VERSION}/conf.d/50_xdebug.ini

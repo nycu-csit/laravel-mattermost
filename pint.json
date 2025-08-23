@@ -1,0 +1,24 @@
+{
+    "preset": "psr12",
+    "rules": {
+        "@PHP83Migration": true,
+        "align_multiline_comment": true,
+        "array_push": true,
+        "cast_spaces": true,
+        "class_reference_name_casing": true,
+        "fully_qualified_strict_types": true,
+        "function_typehint_space": true,
+        "lambda_not_used_import": true,
+        "magic_method_casing": true,
+        "modernize_types_casting": true,
+        "native_function_casing": true,
+        "native_function_type_declaration_casing": true,
+        "no_multiple_statements_per_line": true,
+        "pow_to_exponentiation": true,
+        "single_line_comment_spacing": true,
+        "single_line_comment_style": { "comment_types": ["hash"] },
+        "single_quote": true,
+        "standardize_not_equals": true,
+        "use_arrow_functions": true
+    }
+}
