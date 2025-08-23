@@ -12,7 +12,7 @@ include:
   - project: www/pipelines
     ref: v5
     file:
-      - overlays/alpine-3.20.gitlab-ci.yml
+      - overlays/alpine-3.19-php83.gitlab-ci.yml
       - modules/test/phpunit.gitlab-ci.yml
       - modules/install/php.gitlab-ci.yml
       - modules/lint/phpcs.gitlab-ci.yml
