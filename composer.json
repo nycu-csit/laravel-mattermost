@@ -1,6 +1,6 @@
 {
     "name": "nycu-csit/laravel-mattermost",
-    "version": "1.0.0",
+    "version": "0.1.0",
     "type": "library",
     "description": "Mattermost Notification Channel for Laravel",
     "keywords": ["laravel", "notification", "mattermost"],
