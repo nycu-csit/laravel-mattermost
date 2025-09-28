@@ -2,6 +2,7 @@
 
 namespace NycuCsit\LaravelMattermost;
 
+use Exception;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
@@ -25,6 +26,9 @@ class MattermostChannel
             return false;
         }
 
+        if (!method_exists($notification, 'toMattermost')) {
+            throw new Exception('Notifications sent via laravel-mattermost should implement `toMattermost` method.');
+        }
         $data = $notification->toMattermost($notifiable);
         // to enable early exit for projects like Meeting
         // Meeting notification has been dispatched, queued, and meeting has
@@ -44,7 +48,7 @@ class MattermostChannel
                 ]);
             }
             return $respOk;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::error('Exception when sending Mattermost notification', [
                 'message' => $e->getMessage(),
             ]);

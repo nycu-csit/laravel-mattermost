@@ -1,0 +1,36 @@
+name: ci
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: php-actions/composer@v6
+
+      - uses: php-actions/phpunit@v4
+        env:
+          XDEBUG_MODE: coverage
+        with:
+          php_extensions: xdebug
+          configuration: phpunit.xml
+          coverage_text: true
+
+      - uses: php-actions/phpcs@v1
+        with:
+          standard: phpcs.xml
+
+      - uses: php-actions/phpstan@v3
+        with:
+          memory_limit: 256M
+
+      - run: pint --test
