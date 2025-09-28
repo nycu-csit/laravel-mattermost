@@ -58,11 +58,11 @@ class MattermostChannelTest extends TestCase
     }
 }
 
+// phpcs:ignore PSR1.Classes.ClassDeclaration.MultipleClasses
 class MattermostNotification extends \Illuminate\Notifications\Notification
 {
     public function __construct(private $earlyExit = false)
     {
-
     }
 
     public function toMattermost(object $notifiable)
