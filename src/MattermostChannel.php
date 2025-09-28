@@ -38,7 +38,7 @@ class MattermostChannel
             return false;
         }
         if (!($data instanceof MattermostMessage)) {
-            throw new LogicException('toMattermost should return Mattermost Message');
+            throw new LogicException('toMattermost should return an instance of MattermostMessage');
         }
 
         try {
