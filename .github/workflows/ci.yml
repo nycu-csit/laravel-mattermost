@@ -33,4 +33,4 @@ jobs:
         with:
           memory_limit: 256M
 
-      - run: pint --test
+      - run: ./vendor/bin/pint --test
