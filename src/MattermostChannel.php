@@ -3,6 +3,7 @@
 namespace NycuCsit\LaravelMattermost;
 
 use Exception;
+use LogicException;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
@@ -36,6 +37,9 @@ class MattermostChannel
         if (!$data) {
             return false;
         }
+        if (!($data instanceof MattermostMessage)) {
+            throw new LogicException('toMattermost should return Mattermost Message');
+        }
 
         try {
             $response = Http::post($this->webhookUrl, $data);
@@ -44,7 +48,7 @@ class MattermostChannel
                 Log::error('Failed to send Mattermost notification', [
                     'status' => $response->status(),
                     'body' => $response->body(),
-                    'data' => $data,
+                    'data' => $data->toArray(),
                 ]);
             }
             return $respOk;

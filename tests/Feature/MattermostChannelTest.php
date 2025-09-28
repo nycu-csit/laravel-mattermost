@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use Illuminate\Support\Facades\Http;
 use NycuCsit\LaravelMattermost\MattermostChannel;
+use NycuCsit\LaravelMattermost\MattermostMessage;
 use Orchestra\Testbench\TestCase;
 
 class MattermostChannelTest extends TestCase
@@ -71,9 +72,8 @@ class MattermostNotification extends \Illuminate\Notifications\Notification
             return null;
         }
 
-        return [
-            'text' => 'this is test msg',
-            'channel' => 'general',
-        ];
+        return (new MattermostMessage())
+            ->text('this is test msg')
+            ->channel('general');
     }
 }
