@@ -10,61 +10,72 @@ Add following lines to your `composer.json`:
 "repositories": [
     {
         "type": "vcs",
-        "url": "https://gitlab.it.cs.nycu.edu.tw/nycu-csit/laravel-mattermost"
+        "url": "https://github.com/nycu-csit/laravel-mattermost"
     }
 ],
 "require": {
-    "nycu-csit/laravel-mattermost": "^1.0.0"
+    "nycu-csit/laravel-mattermost": "^0.1.0"
 }
 ```
 
 ## Usage
 
-```php
-<?php
+1. Add Mattermost config in the `services.php`
 
-namespace App\Notifications;
+    ```php
+    // services.php
+    'mattermost' => [
+        'webhook_url' => env('MATTERMOST_WEBHOOK_URL'),
+    ],
+    ```
 
-use NycuCsit\LaravelMattermost\MattermostChannel;
-use Illuminate\Bus\Queueable;
-use Illuminate\Notifications\Notification;
+1. Use `MattermostChannel` in `via` method, and define `toMattermost` method which should return an instance of `MattermostMessage`. You can return falsy value from that method to not send the message to Mattermost.
 
-class NotifyMeetingStartEnd extends Notification
-{
-    use Queueable;
+    ```php
+    <?php
 
-    public function __construct(private Meeting $meeting)
+    namespace App\Notifications;
+
+    use NycuCsit\LaravelMattermost\MattermostChannel;
+    use NycuCsit\LaravelMattermost\MattermostMessage;
+    use Illuminate\Bus\Queueable;
+    use Illuminate\Notifications\Notification;
+
+    class NotifyMeetingStartEnd extends Notification
     {
-    }
-    /**
-     * Get the notification channels.
-     */
-    public function via(object $notifiable): string
-    {
-        return [MattermostChannel::class];
-    }
+        use Queueable;
 
-    /**
-     * Get the payload of the mattermost webhook.
-     * See on the [official website](https://developers.mattermost.com/integrate/webhooks/incoming/#parameters).
-     * 
-     * Notification can exit early without actually sending to Mattermost
-     * channel by returning from falsy value.
-     */
-    public function toMattermost(object $notifiable)
-    {
-        if ($this->meeting->started) {
-            return null;
+        public function __construct(private Meeting $meeting)
+        {
         }
-        // https://developers.mattermost.com/integrate/webhooks/incoming/#parameters
-        return [
-            'text' => '...',
-            'channel' => 'www', // 'general'
-            '...' => '...',
-        ];
+        /**
+        * Get the notification channels.
+        */
+        public function via(object $notifiable)
+        {
+            return [MattermostChannel::class];
+        }
+
+        /**
+        * Get the payload of the mattermost webhook.
+        * See on the [official website](https://developers.mattermost.com/integrate/webhooks/incoming/#parameters).
+        * 
+        * Notification can exit early without actually sending to Mattermost
+        * channel by returning from falsy value.
+        */
+        public function toMattermost(object $notifiable)
+        {
+            // exit early
+            if ($this->meeting->started) {
+                return null;
+            }
+            // https://developers.mattermost.com/integrate/webhooks/incoming/#parameters
+            return (new MattermostMessage)
+                ->text('...')
+                ->channel('town-square');
+        }
     }
-}
-```
+    ```
 
 ## Testing
 
