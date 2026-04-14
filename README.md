@@ -4,18 +4,8 @@ This package provides the custom Mattermost Notification Channel for Laravel 10+
 
 ## Installation
 
-Add following lines to your `composer.json`:
-
-```json
-"repositories": [
-    {
-        "type": "vcs",
-        "url": "https://github.com/nycu-csit/laravel-mattermost"
-    }
-],
-"require": {
-    "nycu-csit/laravel-mattermost": "^0.1.0"
-}
+```shell
+composer require nycu-csit/laravel-mattermost
 ```
 
 ## Usage
